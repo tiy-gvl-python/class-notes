@@ -15,6 +15,21 @@ class Room:
         self.cleaned_squares = []
         self.moves = []
 
+    def __str__(self):
+        board = []
+        for row in range(self.height):
+            local_row = []
+            for col in range(self.width):
+               if (col, row) in self.cleaned_squares:
+                   marker = "x"
+               else:
+                   marker = "."
+               local_row.append(marker)
+            local_row = " ".join(local_row)
+            board.append(local_row)
+        printable_board = "\n".join(board)
+        return printable_board + "\n"
+
     @property
     def report(self):
         return (len(self.moves), self.percent_cleaned)
@@ -81,6 +96,7 @@ class Roomba:
             self.x = random_x
             self.y = random_y
         self.clean_square()
+        print(self.room)
 
 
 class Simulation:
@@ -121,3 +137,8 @@ class Simulation:
 
         all_done = self.room.report[0]
         return (half_done, ninety_done, all_done)
+
+room = Room(10, 10)
+roomba = Roomba(room)
+sim = Simulation(roomba)
+sim.run_simulation()
